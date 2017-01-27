@@ -1,32 +1,45 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Links</h1>
+  <div class="col-md-9">
+    <div class="hunt-box">Recommended for you</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Url</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
     <% @links.each do |link| %>
-      <tr>
-        <td><%= link.title %></td>
-        <td><%= link.url %></td>
-        <td><%= link_to 'Show', link %></td>
-        <% if current_user == link.user %>
-          <td><%= link_to 'Edit', edit_link_path(link) %></td>
-          <td><%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <div class="hunt-box">
+        
+        <div class="row">
 
-<br>
-<% if user_signed_in? %>
-  <%= link_to 'New Link', new_link_path %>
-<% end %>
+            <div class="col-md-2">
+              <span><%= link_to '<i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>'.html_safe, like_link_path(link), method: :put, class: "btn btn-default" %></span>
+              <span><%= link.get_upvotes.size %></span><br>
+              <%= link_to '<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>'.html_safe, dislike_link_path(link), method: :put, class: "btn btn-default" %></td>
+              <span><%= link.get_downvotes.size %></span>          
+            </div>
+            
+            <div class="col-md-8">
+              <h4><%= link_to link.title, link %></h4>
+
+              <div>Submitted by <%= link.user_id %></div>
+            </div>
+            
+            <div class="col-md-2"> 
+              <%= link_to 'Show', link, class: "btn btn-primary", style: "color:white;" %></td>
+              <% if current_user == link.user.email %>
+                <%= link_to 'Edit', edit_link_path(link), class: "btn btn-danger" %></td>
+                <%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+              <% end %>
+            </div>
+
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <div class="hunt-box">
+      <% if user_signed_in? %>
+        <h3><%= current_user.email %></h3>
+          <br>
+        <%= link_to 'Submit New Post', new_link_path, class: "btn btn-primary", style: "color:white;" %>
+      <% end %>     
+    </div>
+  </div>
